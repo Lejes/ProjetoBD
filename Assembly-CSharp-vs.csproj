@@ -46,7 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Arma.cs" />
+     <Compile Include="Assets\Scripts\Arma.cs" />
+     <Compile Include="Assets\Scripts\Itens.cs" />
      <Compile Include="Assets\Scripts\PlayerBehavior.cs" />
+     <Compile Include="Assets\Scripts\Status.cs" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
