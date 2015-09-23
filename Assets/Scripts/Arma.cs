@@ -9,7 +9,7 @@ public class Arma : Itens {
 	void Start () {
 		danoBase = status.ataque * status.forca;
 		chanceDeCritico = (status.inteligencia * status.velocidade) * 0.1;
-		texto.text = status.ataque.ToString ();
+		//texto.text = status.ataque.ToString ();
 	}
 	
 	// Update is called once per frame
