@@ -2,21 +2,26 @@
 using System.Collections;
 
 public class Arma : Itens {
-	public int danoBase;
-	public double chanceDeCritico;
-	public TextMesh texto;
+	private int danoBase;
+	public GameObject portador;//serve para ter acesso aos estatos do portador(quem segura a arma)
+	private double chanceDeCritico;
 	// Use this for initialization
 	void Start () {
-		danoBase = status.ataque * status.forca;
-		chanceDeCritico = (status.inteligencia * status.velocidade) * 0.1;
-		//texto.text = status.ataque.ToString ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-
+	public int getDanoBase(){
+		return danoBase;
+	}
+	public void setPortador(GameObject portador){
+		portador = portador;
+		Status estatusPortador = portador.GetComponent("Status") as Status;
+		danoBase = status.ataque * estatusPortador.forca;
+		chanceDeCritico = (status.inteligencia * status.velocidade) * 0.1;
+	}
 	public int danoReal(){
 		int critico = 1;
 		if (isCritico ()) {
@@ -44,5 +49,20 @@ public class Arma : Itens {
 		return isCritico;
 
 	}
+
+	void OnCollisionEnter2D(Collision2D coll) {
+		if (coll.gameObject.tag == "Player") {
+			PlayerBehavior player = coll.gameObject.GetComponent("PlayerBehavior") as PlayerBehavior;
+			player.tomarDano(danoReal());
+		}
+
+		if (coll.gameObject.tag == "inimigo") {
+			EnemyBehavior inimigo = coll.gameObject.GetComponent("EnemyBahavior") as EnemyBehavior;
+			inimigo.tomarDano(danoReal());
+		}
+		
+	}
+
+
 
 }

@@ -6,9 +6,9 @@ public class Inventario : MonoBehaviour {
 	public GameObject armaAtual;
 	public GameObject posicaoArma;
 	public GameObject player;
+	public GameObject objEstatus;//pega os status do player
 	private bool estaComArma=false;
 	private float lastClick = 0;//conta o intervalo entre os clicks do mouse
-	public TextMesh texto;//variavel para textar coisas(eh um print da vida rs)
 	//variaveis da GUI do inventario
 	private Rect janelaInventario;
 	private string statusText;
@@ -59,7 +59,7 @@ public class Inventario : MonoBehaviour {
 					SpriteRenderer render = inventario[i,j].GetComponent("SpriteRenderer") as SpriteRenderer;//captura o render do prefab
 					Texture2D imagemItem = render.sprite.texture;//apartir do render ele obtem a imagem do prefab(Sprite) 
 					if(GUI.Button (new Rect (40*j, 40*i, 40, 40),imagemItem)){
-						//aqui ficara o cogido resposanvel por equipar os itens 
+						//aqui ficara o codido resposanvel por equipar os itens 
 						//ao personagem
 						if(Time.time-lastClick<0.3){//soh equipa arma ao se dar um "double click"
 							equiparArma(inventario[i,j].name);
@@ -67,7 +67,9 @@ public class Inventario : MonoBehaviour {
 						}
 						else{//um click exibe o status do item
 							Arma armaSelecionada = inventario[i,j].GetComponent("Arma") as Arma;
-							statusText = "Dano:"+armaSelecionada.danoBase;
+							Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
+							arma.setPortador (objEstatus);
+							statusText = "Dano:"+armaSelecionada.getDanoBase();
 						}
 						lastClick = Time.time;
 					}
@@ -89,10 +91,17 @@ public class Inventario : MonoBehaviour {
 		if (armaAtual != null) {//caso ja tenha uma arma equipada ela sera destruida, para que outra a substitua
 			Destroy(armaAtual);
 		}
-		Vector3 posicao = player.transform.position+(player.transform.position-posicaoArma.transform.position);//posicao da arma(precisa ser ajustada)
+		Vector3 posicao = posicaoArma.transform.position;//posicao da arma(precisa ser ajustada)
 		armaAtual = (GameObject)Resources.Load ("Prefabs/Armas/"+nomeItem, typeof(GameObject));
-		armaAtual = Instantiate(armaAtual,posicao,armaAtual.transform.rotation) as GameObject;//instancia a arma na mao do player
+		//Coloca o player como portador da arma
+		Arma arma = armaAtual.GetComponent ("Arma") as Arma;
+		arma.setPortador (objEstatus);
+		armaAtual = Instantiate(armaAtual,posicao,posicaoArma.transform.rotation) as GameObject;//instancia a arma na mao do player
+		//armaAtual.transform.localScale = posicaoArma.transform.localScale;
 		armaAtual.transform.parent=posicaoArma.transform;//transforma a arma em "filha" do player(assim ela se movera junto com ele)
+		armaAtual.transform.localPosition = new Vector3 (0, 0, 0);
+		armaAtual.transform.localScale = new Vector3 (1, 1, 1);
+
 	}
 
 }
