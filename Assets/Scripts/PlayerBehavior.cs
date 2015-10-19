@@ -36,9 +36,14 @@ public class PlayerBehavior : MonoBehaviour {
 			tomarDano(dano);
 		}
 
+		if (status.hpAtual == 0) {
+			morrer();
+		}
+
+
 	}
 
-	void movimentacao(){
+	private void movimentacao(){
 
 		//Recebe as teclas padrao para o movimento do personagem
 		float direcaoX = Input.GetAxis("Horizontal")*velocidade*Time.deltaTime;//teclas:A e D ou <- e ->
@@ -62,7 +67,7 @@ public class PlayerBehavior : MonoBehaviour {
 		playerAnimator.SetFloat ("velocidade", Mathf.Abs(direcaoX));//Chama a animaçao de andar
 	}
 
-	void attack(){
+	private void attack(){
 		playerAnimator.SetTrigger ("attack");
 
 	}
@@ -73,11 +78,7 @@ public class PlayerBehavior : MonoBehaviour {
 		hpBar.alterarHP ();
 	}
 
-	bool morrer(){
-		bool morto = false;
-		if (status.hpAtual == 0) {
-			morto = true;
-		}
-		return morto;
+	private void morrer(){
+		playerAnimator.SetBool ("morto", true);
 	}
 }
