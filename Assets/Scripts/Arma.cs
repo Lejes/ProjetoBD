@@ -20,9 +20,9 @@ public class Arma : Itens {
 		portador = portador;
 		Status estatusPortador = portador.GetComponent("Status") as Status;
 		danoBase = status.ataque * estatusPortador.forca;
-		chanceDeCritico = (status.inteligencia * status.velocidade) * 0.1;
+		//chanceDeCritico = (estatusPortador.inteligencia * status.velocidade);
 	}
-	public int danoReal(){
+	/*public int danoReal(){
 		int critico = 1;
 		if (isCritico ()) {
 			critico = 2;
@@ -48,17 +48,17 @@ public class Arma : Itens {
 
 		return isCritico;
 
-	}
+	}*/
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Player") {
 			PlayerBehavior player = coll.gameObject.GetComponent("PlayerBehavior") as PlayerBehavior;
-			player.tomarDano(danoReal());
+			player.tomarDano(getDanoBase());
 		}
 
 		if (coll.gameObject.tag == "inimigo") {
-			EnemyBehavior inimigo = coll.gameObject.GetComponent("EnemyBahavior") as EnemyBehavior;
-			inimigo.tomarDano(danoReal());
+			EnemyBehavior inimigo = coll.gameObject.GetComponent("EnemyBehavior") as EnemyBehavior;
+			inimigo.tomarDano(getDanoBase());
 		}
 		
 	}
