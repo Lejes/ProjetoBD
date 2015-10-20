@@ -12,6 +12,7 @@ public class EnemyBehavior : MonoBehaviour {
 	public GameObject objBarraHP;//guarda o gameObject da barra de hp do inimigo
 	public GameObject objStatus;// '' Status do inimigo
 	public GameObject objArma;
+	public float distanciaMinimaDoPlayer;
 	public Animator enemyAnimator;
 	public float velocidade;
 	private Status status;
@@ -53,7 +54,7 @@ public class EnemyBehavior : MonoBehaviour {
 		case Estado_Do_Inimigo.idle:{
 			distanciaDoPlayer = Vector3.Distance(transform.position,player.transform.position);//pega a distancia do inimigo para o jogador
 			if(distanciaDoPlayer < 100 && distanciaDoPlayer > 0){
-				if(distanciaDoPlayer<20.5){
+				if(distanciaDoPlayer<distanciaMinimaDoPlayer){
 					setEstado(Estado_Do_Inimigo.attack);
 				}
 				else{
@@ -66,9 +67,9 @@ public class EnemyBehavior : MonoBehaviour {
 			}
 		}break;
 		case Estado_Do_Inimigo.attack:{
-			if(distanciaDoPlayer>=20.5){
-				setEstado(Estado_Do_Inimigo.idle);
+			if(distanciaDoPlayer>=distanciaMinimaDoPlayer || player.getStatus().hpAtual==0){
 				enemyAnimator.SetBool("attack",false);
+				setEstado(Estado_Do_Inimigo.idle);
 			}else{
 				enemyAnimator.SetBool("attack",true);
 			}

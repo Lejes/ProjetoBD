@@ -28,7 +28,6 @@ public class Inventario : MonoBehaviour {
 	void Start () {
 		//Acredito que aqui ficara a parte do banco, os itens serao carregados para o invetario do personagem
 		inventario[0,0] = (GameObject)Resources.Load ("Prefabs/Armas/EspadaBasica", typeof(GameObject));
-		inventario[0,1] = (GameObject)Resources.Load ("Prefabs/Armas/EspadaBandida", typeof(GameObject));
 	
 	}
 	
@@ -62,13 +61,13 @@ public class Inventario : MonoBehaviour {
 						//aqui ficara o codido resposanvel por equipar os itens 
 						//ao personagem
 						if(Time.time-lastClick<0.3){//soh equipa arma ao se dar um "double click"
-							equiparArma(inventario[i,j].name);
+							equiparArma(inventario[i,j]);
 
 						}
 						else{//um click exibe o status do item
 							Arma armaSelecionada = inventario[i,j].GetComponent("Arma") as Arma;
-							Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
-							arma.setPortador (objEstatus);
+						//	Arma arma = armaSelecionada.GetComponent ("Arma") as Arma;
+							//arma.setPortador (objEstatus);
 							statusText = "Dano:"+armaSelecionada.getDanoBase();
 						}
 						lastClick = Time.time;
@@ -85,18 +84,17 @@ public class Inventario : MonoBehaviour {
 
 	}
 
-	void equiparArma(string nomeItem){
+	void equiparArma(GameObject item){
 		//aqui ficara o cogido resposanvel por equipar os itens 
 		//ao personagem
 		if (armaAtual != null) {//caso ja tenha uma arma equipada ela sera destruida, para que outra a substitua
 			Destroy(armaAtual);
 		}
 		Vector3 posicao = posicaoArma.transform.position;//posicao da arma(precisa ser ajustada)
-		armaAtual = (GameObject)Resources.Load ("Prefabs/Armas/"+nomeItem, typeof(GameObject));
 		//Coloca o player como portador da arma
+		armaAtual = Instantiate(item,posicao,posicaoArma.transform.rotation) as GameObject;//instancia a arma na mao do player
 		Arma arma = armaAtual.GetComponent ("Arma") as Arma;
 		arma.setPortador (objEstatus);
-		armaAtual = Instantiate(armaAtual,posicao,posicaoArma.transform.rotation) as GameObject;//instancia a arma na mao do player
 		//armaAtual.transform.localScale = posicaoArma.transform.localScale;
 		armaAtual.transform.parent=posicaoArma.transform;//transforma a arma em "filha" do player(assim ela se movera junto com ele)
 		armaAtual.transform.localPosition = new Vector3 (0, 0, 0);

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Arma : Itens {
 	private int danoBase;
-	public GameObject portador;//serve para ter acesso aos estatos do portador(quem segura a arma)
+	public GameObject portador;//serve para ter acesso aos statos do portador(quem segura a arma)
 	private double chanceDeCritico;
 	// Use this for initialization
 	void Start () {
@@ -50,8 +50,8 @@ public class Arma : Itens {
 
 	}*/
 
-	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Player") {
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (coll.gameObject.tag == "Player" && portador.tag=="inimigo") {
 			PlayerBehavior player = coll.gameObject.GetComponent("PlayerBehavior") as PlayerBehavior;
 			player.tomarDano(getDanoBase());
 		}

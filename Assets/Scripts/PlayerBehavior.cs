@@ -43,6 +43,9 @@ public class PlayerBehavior : MonoBehaviour {
 
 	}
 
+	public Status getStatus(){
+		return status;
+	}
 	private void movimentacao(){
 
 		//Recebe as teclas padrao para o movimento do personagem
